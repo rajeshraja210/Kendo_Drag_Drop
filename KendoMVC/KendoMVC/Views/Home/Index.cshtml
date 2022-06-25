@@ -1,0 +1,32 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+<div class="k-d-flex k-flex-wrap">
+    <div class="k-flex-grow">
+        <h4 class="mb-sm">Employee List using Kendo grid and order drag and drop</h4>
+
+        @(Html.Kendo().Grid<KendoMVC.Models.Employee>()
+    .Name("EmpGrid")
+    .Reorderable(reorder => reorder.Rows(true).Columns(true))
+        //.Selectable(select => select.Mode(GridSelectionMode.Multiple))
+        .Columns(columns =>
+        {
+        columns.Template(@<text>Drag ANd Drop </text>).Draggable(true);
+            columns.Bound(p => p.FirstName).Title("FirstName");
+            columns.Bound(p => p.LastName).Title("LastName");
+
+
+        }).Pageable()
+            .Scrollable()
+            .Sortable()
+            .Navigatable()
+            .HtmlAttributes(new { style = "height:430px;" })
+    .DataSource(dataSource => dataSource
+        .Ajax()
+         .PageSize(10)
+            .Model(m => m.Id("EmployeeID")) //Ensure that the Model identifier ("Id") is defined
+        .Read(read => read.Action("EmployeeList", "Home"))
+        )
+        )
+    </div>
+</div>  
